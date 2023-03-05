@@ -13,12 +13,7 @@ let userRegister = async (req, res) => {
       .collection("users")
       .findOne({ email: req.body.email });
 
-    if (!userEmail) {
-      const userMobile = await db
-        .collection("users")
-        .findOne({ mobile: req.body.mobile });
-
-      if (!userMobile) {
+    if (!userEmail) {      
         req.body.createdAt = new Date().toString();
         req.body.role = "USER";
 
@@ -31,11 +26,7 @@ let userRegister = async (req, res) => {
         res.json({ message: "User Added Successfully !" });
 
         await closeConnection();
-      } else {
-        res
-          .status(401)
-          .json({ message: "This mobile number already registered !" });
-      }
+      
     } else {
       res.status(401).json({ message: "This Email Id already Exists !" });
     }
